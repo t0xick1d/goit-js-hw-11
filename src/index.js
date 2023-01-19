@@ -3,6 +3,10 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+const simpleLightBox = new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+});
+
 const refs = {
   form: document.querySelector('#search-form'),
   picture: document.querySelector('.gallery'),
@@ -91,9 +95,7 @@ function galleryListMarkUp(gallery) {
     )
     .join(' ');
   refs.picture.insertAdjacentHTML('beforeend', galleryList);
-  new SimpleLightbox('.gallery a', {
-    captionDelay: 250,
-  });
+  simpleLightBox.refresh();
 }
 function showNotfication(value, currentValue) {
   if (value.total === 0) {
