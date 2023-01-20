@@ -33,7 +33,8 @@ async function onSubmtForm(e) {
   showNotfication(responsPictures.data, currentValue);
 
   galleryListMarkUp(responsPictures);
-  refs.btnTakeMorePictures.style.display = 'block';
+
+  switchShowBtnMoreLoading(responsPictures.data.totalHits);
 }
 
 async function onClickTakePictures(e) {
@@ -45,6 +46,8 @@ async function onClickTakePictures(e) {
     );
     actualPage += 1;
     galleryListMarkUp(responsPictures);
+
+    switchShowBtnMoreLoading(responsPictures.data.totalHits);
   } else {
     actualPage = 1;
     const responsPictures = await getAllActualPictures(
@@ -53,6 +56,8 @@ async function onClickTakePictures(e) {
     );
     refs.picture.innerHTML = '';
     galleryListMarkUp(responsPictures);
+
+    switchShowBtnMoreLoading(responsPictures.data.totalHits);
   }
 }
 
@@ -97,6 +102,7 @@ function galleryListMarkUp(gallery) {
   refs.picture.insertAdjacentHTML('beforeend', galleryList);
   simpleLightBox.refresh();
 }
+
 function showNotfication(value, currentValue) {
   if (value.total === 0) {
     Notify.failure(
@@ -112,4 +118,11 @@ function showNotfication(value, currentValue) {
 function cleanGaleryList() {
   refs.picture.innerHTML = '';
   refs.btnTakeMorePictures.style.display = '';
+}
+
+function switchShowBtnMoreLoading(totalHits) {
+  const showBtnLoadMore = actualPage <= Math.ceil(totalHits / 40);
+  showBtnLoadMore
+    ? (refs.btnTakeMorePictures.style.display = 'block')
+    : (refs.btnTakeMorePictures.style.display = 'none');
 }
